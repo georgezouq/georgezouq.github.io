@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>George &#39;s Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">It just record daily learning,And something fun~~.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2016/07/13/CAP-Consistency-Availability-Partition-Tolerance-理论学习/">
+        <h2 class="post-title">
+            CAP(Consistency,Availability,Partition Tolerance)理论学习
+        </h2>
+        
+            <h3 class="post-subtitle">
+                CSS布局方式 之 圣杯布局和双飞翼布局
+            </h3>
+        
+        <div class="post-content-preview">
+            CAP 理论简述海量数据管理中一致性理论，包括:CAP理论，BAS理论，数据一致性理论模型，以及现有的经典数据一致性技术。其中 CAP(Consistency,Availability,Partition Tolerance)，理论是NoSQL 数据库管理系统构建的基础。CAP定律说的是在一个分布式计算机系统中，一致性、可用性和分区容错性这三种保证无法同时得到满足，最多满足两个。该定律作为猜......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-07-13
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/07/06/How-do-we-build-website-with-Memcache/">
+        <h2 class="post-title">
+            How do we build website with Memcache
+        </h2>
+        
+        <div class="post-content-preview">
+            This article from Memcached Official Document ,slightly modified and thanks for original author :
+We begin with A Story of Caching
+Two plucky adventurers, Programmer and Sysadmin, set out on a jour......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/07/05/基于Tomcat-Nginx-Memcached-搭建集群HA架构/">
+        <h2 class="post-title">
+            基于Tomcat + Nginx + Memcached 搭建集群HA架构
+        </h2>
+        
+            <h3 class="post-subtitle">
+                基于Tomcat + Nginx + Memcached 搭建集群HA架构
+            </h3>
+        
+        <div class="post-content-preview">
+            名词解释高可用 (HA)HA (Highly Avaliable) 是一种集群常用策略。即在集群环境中，当一台服务器挂掉之后，其他服务器可以立即接着这台服务器未完成的任务继续工作。
+...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George Zou on
+        2016-07-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/Less And Sass/">
+        <h2 class="post-title">
+            Less And Sass
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Keynote: Less And Sass
+            </h3>
+        
+        <div class="post-content-preview">
+            Less与Sass解析  首先我们要明确一个观点，尽管Less和Sass语法上有一些共性，但是Less !== Sass。当我们构建一个网站的时候，我们可能会需要调色板这个功能，即拥有提供固定的可选择样式，避免样式跳跃过大。这个时候我们就用到了Less和Sass，事实证明，他们的功能要比这个多得多。
+Less 和 Sass 语法共性1.混入（Minxins）—— class中的class2.......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/About ES6/">
+        <h2 class="post-title">
+            ES6 Getting Start - Commend
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Keynote: Commend with ES6
+            </h3>
+        
+        <div class="post-content-preview">
+            ES6 部分方法点评箭头函数(Arrow Functions)  箭头函数时ES6的语法糖之一:
+//ES5var selected = allJobs.filter(function(job)&#123;  return job.isSelected();&#125;);//ES6var selected = allJobs.filter(job =&gt; job.isSelected(......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/FP-Growth-Algorithm/">
+        <h2 class="post-title">
+            Correlation Analysis
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Correlation Analysis
+            </h3>
+        
+        <div class="post-content-preview">
+            FP-Group 算法引言在关联分析中，频繁项集的挖掘最常用到的就是 Aprior 算法.Aprior 算法是一种先产生 候选项集 在检验是否频繁的 产生-测试 的方法。这种方法有种弊端：当数据集很大的时候，需要不断扫描数据集造成运行效率很低。而 FP-Group 算法就很好的解决了这个问题。他的思路是吧数据集中的事务映射到一棵 FP-Tree 上面，在根据这颗树找出频繁项集。FP-Tree......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/How use Markdown to write GitHub README/">
+        <h2 class="post-title">
+            How use Markdown to write GitHub README
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Keynote: How use Markdown to write GitHub README
+            </h3>
+        
+        <div class="post-content-preview">
+            #Github Readme 排版解析
+
+README 文件的后缀名是md，md是markdown的缩写。markdown是一种编辑博客的语言，Github在语法标准markdown上做了修改，称之为Github Flavored Markdown GFM 不是 GFW=.=
+
+##一、关于标题
+大标题  中标题在文本下面加上等于号=，那么上方的文本就变成大标题。等于号的个数无限制，但一定要......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/AngularJS 1x Style Guide/">
+        <h2 class="post-title">
+            AngularJS 1x Style Guide
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Keynote: AngularJS 1x Style Guide
+            </h3>
+        
+        <div class="post-content-preview">
+            Angular 1.x 编码规则Angular 团队支持&lt;非常感谢Angular团队领导Igor Minar,检查审视，贡献必要的资料
+目录1.[单一职责](#single-responsibility)
+2.[IIFE](#iife)
+3.[Modules](#modules)
+4.[Controllers](#controllers)
+5.[Services](#services)......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/MQTT Agreement Basics/">
+        <h2 class="post-title">
+            MQTT Agreement Basics
+        </h2>
+        
+            <h3 class="post-subtitle">
+                Keynote: MQTT Agreement Basics
+            </h3>
+        
+        <div class="post-content-preview">
+            MQTT 协议 理论篇MQTT(Message Queuing Telemetry Transport,消息队列遥测传输) 是IBM开发的一个及时通讯协议，有可能成为物联网的重要组成部分。该协议支持所有平台，几乎可以把所有联网物品和外部链接起来，被用来当做传感器和制动器
+MQTT 特点MQTT 协议是为了大量计算能力有限，且工作在低带宽、不可靠订单网络的远程传感器和控制设备通讯而设计的协议，......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/06/27/CSS布局方式-之-圣杯布局和双飞翼布局/">
+        <h2 class="post-title">
+            CSS布局方式 之 圣杯布局和双飞翼布局
+        </h2>
+        
+            <h3 class="post-subtitle">
+                CSS布局方式 之 圣杯布局和双飞翼布局
+            </h3>
+        
+        <div class="post-content-preview">
+            CSS布局方式 之 圣杯布局和双飞翼布局圣杯布局在各种布局的技术实现中，可以发现以下三种技术被经常使用：
+
+浮动 float
+负边距 negative margin
+相对定位 relative position
+
+这时实现布局的三个最基本的原子技术，只要巧妙组合就可以拼出各种布局的实现方案。
+DOM 结构：&lt;div id="page"&gt;  &lt;div id="hd"&gt;&......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by George on
+        2016-06-27
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+        <li class="next">
+            <a href="/page/2/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                            <a href="/tags/#HTML布局" title="HTML布局" rel="2">HTML布局</a>
+                            
+                        
+                            
+                            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Analysis" title="Analysis" rel="2">Analysis</a>
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Java" title="Java" rel="2">Java</a>
+                            
+                        
+                            
+                            <a href="/tags/#推送" title="推送" rel="2">推送</a>
+                            
+                        
+                            
+                            <a href="/tags/#前端开发" title="前端开发" rel="4">前端开发</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Python" title="Python" rel="3">Python</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#JavaScript" title="JavaScript" rel="2">JavaScript</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/avatar.jpg" />
+                        
+
+                        
+                            <p>Make your faith larger than your fears and your dreams larger than your doubts</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/George-邹">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/georgezouq">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                                <li>
+                                    <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

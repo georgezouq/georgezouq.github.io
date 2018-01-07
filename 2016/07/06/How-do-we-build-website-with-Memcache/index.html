@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          How do we build website with Memcache - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2016/07/06/How-do-we-build-website-with-Memcache/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>How do we build website with Memcache</h1>
+                    <h2 class="subheading">undefined</h2>
+                    <span class="meta">
+                        Posted by George on
+                        2016-07-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>This article from <a href="https://github.com/memcached/memcached/wiki/TutorialCachingStory" target="_blank" rel="noopener">Memcached Official Document</a> ,slightly modified and thanks for original author :</p>
+<p>We begin with A Story of Caching</p>
+<p>Two plucky adventurers, Programmer and Sysadmin, set out on a journey. Together they make websites. Websites with webservers and databases. Users from all over the Internet talk to the webservers and ask them to make pages for them. The webservers ask the databases for junk they need to make the pages. Programmer codes, Sysadmin adds webservers and database servers.</p>
+<p>One day the Sysadmin realizes that their database is sick! It’s spewing bile and red stuff all over! Sysadmin declares it has a fever, a load average of 20! Programmer asks Sysadmin, “well, what can we do?” Sysadmin says, “I heard about this great thing called memcached. It really helped livejournal!” “Okay, let’s try it!” says the Programmer.</p>
+<p>Our plucky Sysadmin eyes his webservers, of which he has six. He decides to use three of them to run the ‘memcached’ server. Sysadmin adds a gigabyte of ram to each webserver, and starts up memcached with a limit of 1 gigabyte each. So he has three memcached instances, each can hold up to 1 gigabyte of data. So the Programmer and the Sysadmin step back and behold their glorious memcached!</p>
+<p>“So now what?” they say, “it’s not DOING anything!” The memcacheds aren’t talking to anything and they certainly don’t have any data. And NOW their database has a load of 25!</p>
+<p>Our adventurous Programmer grabs the pecl/memcache client library manual, which the plucky Sysadmin has helpfully installed on all SIX webservers. “Never fear!” he says. “I’ve got an idea!” He takes the IP addresses and port numbers of the THREE memcacheds and adds them to an array in php.</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$MEMCACHE_SERVERS = <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">"10.1.1.1"</span>, <span class="comment">//web1</span></span><br><span class="line">    <span class="string">"10.1.1.2"</span>, <span class="comment">//web2</span></span><br><span class="line">    <span class="string">"10.1.1.3"</span>, <span class="comment">//web3</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>Then he makes an object, which he cleverly calls ‘$memcache’.</p>
+<p>$memcache = new Memcache();<br>foreach($MEMCACHE_SERVERS as $server){<br>    $memcache-&gt;addServer ( $server );<br>}<br>Now Programmer thinks. He thinks and thinks and thinks. “I know!” he says. “There’s this thing on the front page that runs SELECT * FROM hugetable WHERE timestamp &gt; lastweek ORDER BY timestamp ASC LIMIT 50000; and it takes five seconds!” “Let’s put it in memcached,” he says. So he wraps his code for the SELECT and uses his $memcache object. His code asks:</p>
+<p>Are the results of this select in memcache? If not, run the query, take the results, and PUT it in memcache! Like so:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$huge_data_for_front_page = $memcache-&gt;get(<span class="string">"huge_data_for_front_page"</span>);</span><br><span class="line"><span class="keyword">if</span>($huge_data_for_front_page === <span class="keyword">false</span>)&#123;</span><br><span class="line">    $huge_data_for_front_page = <span class="keyword">array</span>();</span><br><span class="line">    $sql = <span class="string">"SELECT * FROM hugetable WHERE timestamp &gt; lastweek ORDER BY timestamp ASC LIMIT 50000"</span>;</span><br><span class="line">    $res = mysql_query($sql, $mysql_connection);</span><br><span class="line">    <span class="keyword">while</span>($rec = mysql_fetch_assoc($res))&#123;</span><br><span class="line">        $huge_data_for_front_page[] = $rec;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// cache for 10 minutes</span></span><br><span class="line">    $memcache-&gt;set(<span class="string">"huge_data_for_front_page"</span>, $huge_data_for_front_page, <span class="number">0</span>, <span class="number">600</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// use $huge_data_for_front_page how you please</span></span><br></pre></td></tr></table></figure>
+<p>Programmer pushes code. Sysadmin sweats. BAM! DB load is down to 10! The website is pretty fast now. So now, the Sysadmin puzzles, “What the HELL just happened!?” “I put graphs on my memcacheds! I used cacti, and this is what I see! I see traffic to one memcached, but I made three :(.” So, the Sysadmin quickly learns the ascii protocol and telnets to port 11211 on each memcached and asks it:</p>
+<p>Hey, ‘get huge_data_for_front_page’ are you there?</p>
+<p>The first memcached does not answer…</p>
+<p>The second memcached does not answer…</p>
+<p>The third memcached, however, spits back a huge glob of crap into his telnet session! There’s the data! Only once memcached has the key that the Programmer cached!</p>
+<p>Puzzled, he asks on the mailing list. They all respond in unison, “It’s a distributed cache! That’s what it does!” But what does that mean? Still confused, and a little scared for his life, the Sysadmin asks the Programmer to cache a few more things. “Let’s see what happens. We’re curious folk. We can figure this one out,” says the Sysadmin.</p>
+<p>“Well, there is another query that is not slow, but is run 100 times per second. Maybe that would help,” says the Programmer. So he wraps that up like he did before. Sure enough, the server loads drops to 8!</p>
+<p>So the Programmer codes more and more things get cached. He uses new techniques. “I found them on the list and the faq! What nice blokes,” he says. The DB load drops; 7, 5, 3, 2, 1!</p>
+<p>“Okay,” says the Sysadmin, “let’s try again.” Now he looks at the graphs. ALL of the memcacheds are running! All of them are getting requests! This is great! They’re all used!</p>
+<p>So again, he takes keys that the Programmer uses and looks for them on his memcached servers. ‘get this_key’ ‘get that_key’ But each time he does this, he only finds each key on one memcached! Now WHY would you do this, he thinks? And he puzzles all night. That’s silly! Don’t you want the keys to be on all memcacheds?</p>
+<p>“But wait”, he thinks “I gave each memcached 1 gigabyte of memory, and that means, in total, I can cache three gigabytes of my database, instead of just ONE! Oh man, this is great,” he thinks. “This’ll save me a ton of cash. Brad Fitzpatrick, I love your ass!”</p>
+<p>“But hmm, the next problem, and this one’s a puzzler, this webserver right here, this one runing memcached it’s old, it’s sick and needs to be upgraded. But in order to do that I have to take it offline! What will happen to my poor memcache cluster? Eh, let’s find out,” he says, and he shuts down the box. Now he looks at his graphs. “Oh noes, the DB load, it’s gone up in stride! The load isn’t one, it’s now two. Hmm, but still tolerable. All of the other memcacheds are still getting traffic. This ain’t so bad. Just a few cache misses, and I’m almost done with my work. So he turns the machine back on, and puts memcached back to work. After a few minutes, the DB load drops again back down to 1, where it should always be.</p>
+<p>“The cache restored itself! I get it now. If it’s not available it just means a few of my requests get missed. But it’s not enough to kill me. That’s pretty sweet.”</p>
+<p>So, the Programmer and Sysadmin continue to build websites. They continue to cache. When they have questions, they ask the mailing list or read the faq again. They watch their graphs. And all live happily ever after.</p>
+<p>Author: Dormando via IRC. Edited by Brian Moon for fun. Further fun editing by Emufarmers.</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/07/06/How-do-we-build-website-with-Memcache/"
+                    data-title="How do we build website with Memcache"
+                    data-url="http://localhost/2016/07/06/How-do-we-build-website-with-Memcache/"
+                    data-images=""
+                    data-content="This article from Memcached Official Document ,... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/07/13/CAP-Consistency-Availability-Partition-Tolerance-理论学习/" data-toggle="tooltip" data-placement="top" title="CAP(Consistency,Availability,Partition Tolerance)理论学习">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/07/05/基于Tomcat-Nginx-Memcached-搭建集群HA架构/" data-toggle="tooltip" data-placement="top" title="基于Tomcat + Nginx + Memcached 搭建集群HA架构">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/07/06/How-do-we-build-website-with-Memcache/"
+                        data-title="How do we build website with Memcache"
+                        data-url="http://localhost/2016/07/06/How-do-we-build-website-with-Memcache/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

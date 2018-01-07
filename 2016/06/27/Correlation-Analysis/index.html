@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Correlation Analysis - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2016/06/27/Correlation-Analysis/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        /*background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')*/
+        height: 500px;
+        overflow: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+<header class="intro-header" >
+    <iframe src="null"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/Analysis/" title="Analysis">Analysis</a>
+                            
+                        </div>
+
+                        <h1>Correlation Analysis</h1>
+                        <h2 class="subheading">Correlation Analysis</h2>
+                        <span class="meta">
+                            Posted by George on
+                            2016-06-27
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </iframe>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Correlation-Analysis"><a href="#Correlation-Analysis" class="headerlink" title="Correlation Analysis"></a>Correlation Analysis</h1><h2 id="Instrution"><a href="#Instrution" class="headerlink" title="Instrution"></a>Instrution</h2><p>关联分析是指从数据集中挖掘出频繁项集，然后从频繁项集中提取出事物之间的强关联规则，辅助决策。</p>
+<p>eg：下面是一个超市的几名顾客交易信息：</p>
+<p>TID         Item<br>001       Cola,Egg,Ham<br>002          Cola, Diaper, Beer<br>003          Cola, Diaper, Beer, Ham<br>004          Diaper, Beer</p>
+<p>TID 代表流水号，Items代表一次交易的商品</p>
+<p>我们对这个数据集进行关联分析，可以找出关联规则 <code>{Diaper}-&gt;{Bear}</code>。它代表的意义是：购买了 Diaper 的顾客会购买 Beer。这个关系不是必然的，但是可能性很大，这就已经足够用来辅助商家调整 Diaper 和 Beer 的摆放位置了，或者进行捆绑促销来提高销售量。</p>
+<h2 id="关联分析-相关名词定义"><a href="#关联分析-相关名词定义" class="headerlink" title="关联分析 相关名词定义"></a>关联分析 相关名词定义</h2><ol>
+<li><p>事务：每一条交易称为一个事务，例如上述实例中的数据集就是四个事务</p>
+</li>
+<li><p>项：交易的每一个物品称为一个项，例如Cola、Egg等</p>
+</li>
+<li><p>项集：包含另个或多个项的集合叫做项集，例如 {Cola,Egg,Ham}</p>
+</li>
+<li><p>k-项集：包含k个项的集合叫做<code>k-项集</code>，例如 <code>{Cola}</code> 叫做 <code>1-项集</code>，<br><code>{Cola,Egg}</code> 叫做 <code>2-项集</code>。</p>
+</li>
+<li><p>支持度计数：一个项集出现在几个事务当中，它的支持度计数就是几。例如 <code>{Diaper,Beer}</code> 出现在事务 002、003、004 中，所以他的支持度计数是 3</p>
+</li>
+<li><p>支持度：支持度计数除于总的事物数。例如上述实例中总的事物数为4，<code>{Diaper,Beer}</code> 的支持度计数为3，所以他的支持度是 <code>3/4=75%</code>，说明有 75% 的人同时买了 Diaper 和 Beer</p>
+</li>
+<li><p>频繁项集：支持度大于或等于某个阈值的项集就叫做 <code>频繁项集</code>。例如阈值设为 50% 时，因为{Diaper,Beer} 的支持度是 75%，所以它是频繁项集。</p>
+</li>
+<li><p>前件和后件：对于规则 {Diaper}-&gt;{Beer}，{Diaper}叫做前件，{Beer}叫做后件。</p>
+</li>
+<li><p>置信度：对于规则 {Diaper}-&gt;{Beer}，{Diaper,Beer}的支持度除于 {Diaper} 的支持度计数，为这个规则的置信度。例如规则 {Diaper}-&gt;{Beer}，{Diaper,Beer}的支持度计数除于{Diaper}的支持度计数，为这个规则的置信度。例如规则{Diaper}-&gt;{Beer} 的置信度为 3/3=100%。说明买了Diaper 的人 100% 也买了 Beer。</p>
+</li>
+<li><p>强关联规则：大于或等于最小支持度阈值和最小置信度阈值的规则叫做强关联规则。关联分析的最终目标就是要找出强关联规则。</p>
+<p>我们容易发现，如果一个项集是频繁项集，则它的子项也都是频繁项集。如果一个项集是非频繁项集，则它的 超集也一定是非频繁项集。例如 {Diaper, Beer}是频繁项集，则{Diaper}、{Beer}也都是频繁项集。{Egg}是非频繁项集，则{Cola, Egg}也是非频繁项集。</p>
+</li>
+</ol>
+<h3 id="关联分析"><a href="#关联分析" class="headerlink" title="关联分析"></a>关联分析</h3><p>关联分析的两个步骤</p>
+<pre><code>1. 利用支持度找出数据集中的 `频繁项集`
+2. 利用置信度从频繁项集中提取出 `强关联规则`
+</code></pre><h2 id="频繁项集的挖掘"><a href="#频繁项集的挖掘" class="headerlink" title="频繁项集的挖掘"></a>频繁项集的挖掘</h2><h3 id="Apriori-Algorithm"><a href="#Apriori-Algorithm" class="headerlink" title="Apriori Algorithm"></a>Apriori Algorithm</h3><p>Apriori Algorithm 的思路是先找出 <code>候选项集</code>，然后根据 <code>最小支持度阈值</code> 筛选出 <code>频繁项集</code>。</p>
+<pre><code>eg. 先找出所有的 `1-项集`，然后筛选出里面的 `频繁1-项集`；根据`频繁1-项集` 生成候选的 `2-项集`，然后筛选里面的 `频繁2-项集`；再根据 `频繁2-项集` 生成候选的 `3-项集`，从里面筛选出频繁 `3-项集`；.......
+</code></pre><p>Apriori 算法的缺点是需要不断扫描数据集，不断地求候选集的支持度从而判断它时候是频繁项集，当数据量大的时候，这种算法的效率将会非常低。</p>
+<h3 id="FP-Growth-Algorithm"><a href="#FP-Growth-Algorithm" class="headerlink" title="FP-Growth Algorithm"></a>FP-Growth Algorithm</h3><p>FP-Growth 算法只需要扫描两次数据集，它的思路是把构造一棵 FP-Tree ，把数据集中的数据映射到树上，在根据这颗 <code>FP-Tree</code> 找出所有频繁项集。</p>
+<p>关于FP-Growth，<a href="http://blog.csdn.net/Bone_ACE/article/details/46669699" target="_blank" rel="noopener">FP-Growth算法的介绍</a>、<a href="http://blog.csdn.net/bone_ace/article/details/46746727" target="_blank" rel="noopener">FP-Growth算法的Python实现</a></p>
+<p>转载于 <a href="http://blog.csdn.net/bone_ace/article/details/46648965" target="_blank" rel="noopener">CSDN</a> 感谢原作者</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/06/27/Correlation-Analysis/"
+                    data-title="Correlation Analysis"
+                    data-url="http://localhost/2016/06/27/Correlation-Analysis/"
+                    data-images="http://localhost/post-bg-js-version.jpg"
+                    data-content="Correlation AnalysisInstrution关联分析是指从数据集中挖掘出频繁项... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="Example Post with Code Highlight">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="基于Redis的三种分布式爬虫策略">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/06/27/Correlation-Analysis/"
+                        data-title="Correlation Analysis"
+                        data-url="http://localhost/2016/06/27/Correlation-Analysis/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        <a class="tag-link" href="/tags/Analysis/">Analysis</a><a class="tag-link" href="/tags/Angular/">Angular</a><a class="tag-link" href="/tags/Angular2/">Angular2</a><a class="tag-link" href="/tags/CSS/">CSS</a><a class="tag-link" href="/tags/ES6/">ES6</a><a class="tag-link" href="/tags/HTML布局/">HTML布局</a><a class="tag-link" href="/tags/Java/">Java</a><a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/Memcached/">Memcached</a><a class="tag-link" href="/tags/Nginx/">Nginx</a><a class="tag-link" href="/tags/Python/">Python</a><a class="tag-link" href="/tags/Redis/">Redis</a><a class="tag-link" href="/tags/Spider/">Spider</a><a class="tag-link" href="/tags/前端/">前端</a><a class="tag-link" href="/tags/前端开发/">前端开发</a><a class="tag-link" href="/tags/工具使用/">工具使用</a><a class="tag-link" href="/tags/推送/">推送</a><a class="tag-link" href="/tags/数据/">数据</a><a class="tag-link" href="/tags/爬虫/">爬虫</a><a class="tag-link" href="/tags/集群/">集群</a>
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

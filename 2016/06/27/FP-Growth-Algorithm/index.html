@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Correlation Analysis - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2016/06/27/FP-Growth-Algorithm/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        /*background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')*/
+        height: 500px;
+        overflow: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+<header class="intro-header" >
+    <iframe src="null"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/Analysis/" title="Analysis">Analysis</a>
+                            
+                        </div>
+
+                        <h1>Correlation Analysis</h1>
+                        <h2 class="subheading">Correlation Analysis</h2>
+                        <span class="meta">
+                            Posted by George on
+                            2016-06-27
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </iframe>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="FP-Group-算法"><a href="#FP-Group-算法" class="headerlink" title="FP-Group 算法"></a>FP-Group 算法</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在关联分析中，频繁项集的挖掘最常用到的就是 Aprior 算法.Aprior 算法是一种先产生 <code>候选项集</code> 在检验是否频繁的 <code>产生-测试</code> 的方法。这种方法有种弊端：当数据集很大的时候，需要不断扫描数据集造成运行效率很低。而 <code>FP-Group</code> 算法就很好的解决了这个问题。他的思路是吧数据集中的事务映射到一棵 <code>FP-Tree</code> 上面，在根据这颗树找出频繁项集。<code>FP-Tree</code> 的构建过程只需要扫描两次数据集。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>某店铺购物篮的数据:</p>
+<p>TID    Items<br>001    Cola, Egg, Ham<br>002    Cola, Diaper, Beer<br>003    Cola, Diaper, Beer, Ham<br>004    Diaper, Beer</p>
+<p>TID 代表交易流水号，Items代表一次交易的商品。</p>
+<p>首先，FP-Growth 算法的任务hi找出数据集中的 <code>频繁项集</code><br>然后，FP-Growth 算法的步骤大体上可以分为两步:(1)FP-Tree 的构建 (2)FP-Tree 上频繁项集的挖掘</p>
+<h2 id="FP-Tree-的构造"><a href="#FP-Tree-的构造" class="headerlink" title="FP-Tree 的构造"></a>FP-Tree 的构造</h2><ol>
+<li><p>扫描一遍数据库，找出频繁项的列表 L ,然后按照 <code>支持度计数</code>递减排序。即：</p>
+<p> L = &lt;(COla:3),(Diaper:3),(Beer:3),(Ham:2)&gt;</p>
+</li>
+<li><p>再次扫描数据库，由每个事物不断构建 TP-Tree:</p>
+<p>(1) TP-Tree 的根节点为 NULL</p>
+<p>(2) 从数据库中取出事物，按照 L 排序，然后把每个项逐个添加到 FP-Tree 的分支上去。例如事物 001 排序后为 <code>{Cola,Ham}</code>，在根节点上加一颗子树 <code>Cola-Ham</code>；事物 002 排序后为 <code>{Cola,Diaper,Beer}</code>，因为根节点上一节有个子树节点 <code>Cola</code>，所以可以共用该节点，在 <code>Cola</code> 节点上加一颗子树 <code>Diaper-Beer</code>，同时 Cola 的计数加 1；事物003可与树通用节点 Cola-Diaper-Deer，所以只需要在 Beer后面加上一个 Ham，同时把 Cola,Diaper,Beer的计数加1即可…</p>
+</li>
+<li><p>FP-Tree 还有一样东西-头节点表。作用是将所有相同的项链接起来，这样比较容易遍历。<br>最后得到的FP-Tree如下:<br><img src="1.jpg" alt="FP-Tree"></p>
+</li>
+</ol>
+<p>构造 FP-Tree 的伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">算法：FP-Tree 构造算法</span><br><span class="line">输入：事务数据集D，最小支持度阈值 min_sup</span><br><span class="line">输出：FP-Tree</span><br><span class="line">(1) 扫描事务数据集 D 一次，获得频繁项的集合 F 和其中每个频繁项的支持度，对F 中的所有频繁项按其支持度进行降序排序，结果为频繁项表 L;</span><br><span class="line"></span><br><span class="line">(2) 创建一个 FP-Tree 的根节点 T，标记为“null”；</span><br><span class="line">(3) for 事务数据集 D 中每个事物 Trans do</span><br><span class="line">(4)   对 Trans 中的所有频繁项按照 L 中的次序排序；</span><br><span class="line">(5)   对排序后的频繁项表以[p|P]格式表示，其中p是第一个元素，而p是频繁项表除去p后剩余元素组成的项表；</span><br><span class="line">(6)   调用函数 insert_tree([p|P],T);</span><br><span class="line">(7)  end for</span><br><span class="line"></span><br><span class="line">insert_tree([p|P],root)&#123;</span><br><span class="line">  if root 有孩子节点 N and N.item-name = p.item-name then</span><br><span class="line">  Else</span><br><span class="line">    创建新节点 N;</span><br><span class="line">    N.item-name = p.item-name;</span><br><span class="line">    N.count++;</span><br><span class="line">    p.parent=root;</span><br><span class="line">    将 N.node-link 指向树种与他同项目名的节点;</span><br><span class="line">  end if</span><br><span class="line">  if P 非空 then</span><br><span class="line">    把 P 的第一项目赋值给p，并把它从 P 中删除；</span><br><span class="line">    递归调用 insert_tree([p|P],N);</span><br><span class="line">  end if</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="从-FP-Tree-提取频繁项集"><a href="#从-FP-Tree-提取频繁项集" class="headerlink" title="从 FP-Tree 提取频繁项集"></a>从 FP-Tree 提取频繁项集</h2><p>相对而言，FP-Tree 的构造比较简单，而从 FP-Tree 提取频繁项集比较难理解。其中出现了几个新名词，下面针对购物篮的 FP-Tree 进行讲解吧。</p>
+<h4 id="求以”Ham”为后缀的频繁项集"><a href="#求以”Ham”为后缀的频繁项集" class="headerlink" title="求以”Ham”为后缀的频繁项集:"></a>求以”Ham”为后缀的频繁项集:</h4><p> · 根据头节点表找出 “Ham” 结尾的路径：<cola:3,ham:1> 和 <cola:3,diaper:2,beer:2,ham:1>，带表的意义是：原数据集中 (Cola,Ham) 和 (Cola,Diaper,Beer,Ham) 各出现一次。</cola:3,diaper:2,beer:2,ham:1></cola:3,ham:1></p>
+<p> · “Ham” 的两个前缀路径 {(Cola:1),(Cola Diaper Beer:1)} 构成了 Ham 的 <code>条件模式基</code>，注意条件模式基的计数都定义为了 Ham 的计数。</p>
+<p> · 根据 <code>条件模式基</code> 构建 Ham 的 <code>条件 FP-树</code>：因为 Ham 的条件模式基中 Diaper、Beer 只出现了一次，Coal 出现了两次，所以 Diaper、Beer 是 <code>非频繁项</code>，不包含在 Ham 的条件FP-树种。</p>
+<p> · Ham 的条件FP-树只有一个分支 <cola:2>，得到 <code>条件频繁项集</code> {Cola:2}。<br> · 条件频繁项集 Cola:2 和后缀模式 Ham 合并，得到 <code>频繁项集</code> {Cola Ham:2}。</cola:2></p>
+<p>求以 Beer 为后缀的频繁项集：</p>
+<p>  · Beer 的 <code>条件模式基</code> 有 {(Cola Diaper:2),(Diaper:1)}。<br>  · Beer 的 <code>条件FP-树</code>如下：<br>  · Beer 为后缀的频繁项集为 {Cola Diaper Beer:2}、{Diaper Beer:2}、{Cola Beer:2}</p>
+<p><img src="2.jpg" alt="Beer 条件FP-树"></p>
+<p>求以 Diaper 为后缀的频繁项集：</p>
+<p>  条件模式基为 {(Cola:2)}，最后得到频繁项集 {Cola Diaper:2}。</p>
+<p>综上，得到的频繁项集有:{Cola Ham:2}、{Cola Beer:2}、{Diaper Beer:2}、{Cola Diaper:2}、{Cola Diaper Beer:2}</p>
+<p>从 FP-Tree 提取频繁项集的主要步骤是:</p>
+<pre><code>对于每个频繁项，通过以下步骤来求他的`条件频繁项集`:
+    · 找出它的 `条件模式基`
+    · 把 `条件模式基` 当做事务集去建造一棵树，这棵树不叫 `FP-Tree`，而是叫做 `条件FP-Tree`。
+    · 对这颗 `条件FP-Tree` 递归以上操作，即找这颗`条件FP-Tree` 上的 `子条件频繁项集`。
+· 以上找到的都是该`频繁项`的`条件频繁项`而已，所以每次递归都需要把 `条件频繁项集` 和 该`频繁项集`拼接起来才是我们最终要求的 `频繁项集`。
+</code></pre><p>伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">算法：FP-Growth(FP-Tree,α);</span><br><span class="line">输入：已构造好的 FP-Tree，项集 α (初始值为空)，最小支持度 min_sup;</span><br><span class="line">输出：事务数据集 D 中的频繁项集 L;</span><br><span class="line">  L初始值为空</span><br><span class="line">  if Tree 只包含单个路径 P then</span><br><span class="line">    for 路径 P 中节点的每个组合 (记为 β) do</span><br><span class="line">      产生项目集 α ∪ β ，其支持度 support 等于 β 中节点的最小支持度数;</span><br><span class="line">      return L = L ∪ 支持度大于 min_sup 的项目集合 β ∪ α</span><br><span class="line">    else  //包含多个路径</span><br><span class="line">      for Tree 的头表中的每个频繁项 αf do</span><br><span class="line">        产生一个项目集 β = αf ∪ α ，其支持度等于 αf 的支持度；</span><br><span class="line">        构造 β 的条件模式基 B，并根据该条件模式基 B 构造 β 的条件FP-树 Treeβ;</span><br><span class="line">        if Treeβ ≠ ∅ then</span><br><span class="line">          递归调用 FP-Growth(Treeβ,β);</span><br><span class="line">        end if</span><br><span class="line">      end for</span><br><span class="line">    end if</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<p>本文转载，感谢原作者（原文链接：<a href="http://blog.csdn.net/bone_ace/article/details/46669699）" target="_blank" rel="noopener">http://blog.csdn.net/bone_ace/article/details/46669699）</a></p>
+<p> 哦</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/06/27/FP-Growth-Algorithm/"
+                    data-title="Correlation Analysis"
+                    data-url="http://localhost/2016/06/27/FP-Growth-Algorithm/"
+                    data-images="http://localhost/post-bg-js-version.jpg"
+                    data-content="FP-Group 算法引言在关联分析中，频繁项集的挖掘最常用到的就是 Aprior 算法.Ap... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="ES6 Getting Start - Commend">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="How use Markdown to write GitHub README">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/06/27/FP-Growth-Algorithm/"
+                        data-title="Correlation Analysis"
+                        data-url="http://localhost/2016/06/27/FP-Growth-Algorithm/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        <a class="tag-link" href="/tags/Analysis/">Analysis</a><a class="tag-link" href="/tags/Angular/">Angular</a><a class="tag-link" href="/tags/Angular2/">Angular2</a><a class="tag-link" href="/tags/CSS/">CSS</a><a class="tag-link" href="/tags/ES6/">ES6</a><a class="tag-link" href="/tags/HTML布局/">HTML布局</a><a class="tag-link" href="/tags/Java/">Java</a><a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/Memcached/">Memcached</a><a class="tag-link" href="/tags/Nginx/">Nginx</a><a class="tag-link" href="/tags/Python/">Python</a><a class="tag-link" href="/tags/Redis/">Redis</a><a class="tag-link" href="/tags/Spider/">Spider</a><a class="tag-link" href="/tags/前端/">前端</a><a class="tag-link" href="/tags/前端开发/">前端开发</a><a class="tag-link" href="/tags/工具使用/">工具使用</a><a class="tag-link" href="/tags/推送/">推送</a><a class="tag-link" href="/tags/数据/">数据</a><a class="tag-link" href="/tags/爬虫/">爬虫</a><a class="tag-link" href="/tags/集群/">集群</a>
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

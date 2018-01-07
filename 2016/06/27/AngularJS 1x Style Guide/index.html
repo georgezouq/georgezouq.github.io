@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          AngularJS 1x Style Guide - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2016/06/27/AngularJS 1x Style Guide/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        /*background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')*/
+        height: 500px;
+        overflow: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+<header class="intro-header" >
+    <iframe src="undefined"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/Angular/" title="Angular">Angular</a>
+                            
+                        </div>
+
+                        <h1>AngularJS 1x Style Guide</h1>
+                        <h2 class="subheading">Keynote: AngularJS 1x Style Guide</h2>
+                        <span class="meta">
+                            Posted by George on
+                            2016-06-27
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </iframe>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Angular-1-x-编码规则"><a href="#Angular-1-x-编码规则" class="headerlink" title="Angular 1.x 编码规则"></a>Angular 1.x 编码规则</h1><h2 id="Angular-团队支持"><a href="#Angular-团队支持" class="headerlink" title="Angular 团队支持"></a>Angular 团队支持</h2><p>&lt;非常感谢Angular团队领导Igor Minar,检查审视，贡献必要的资料</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><pre><code>1.[单一职责](#single-responsibility)
+2.[IIFE](#iife)
+3.[Modules](#modules)
+4.[Controllers](#controllers)
+5.[Services](#services)
+6.[Factories](#factories)
+7.[数据服务](#dataservices)
+8.[Directives](#directives)
+9.[Promises解决方案](#promises)
+10.[手动依赖注入](#manualdi)
+11.[压缩和注解](#minification-and-annotation)
+12.[异常处理](#exception-handling)
+13.[命名规则](#naming)
+14.[应用结构优化准则](#application-structure-lift-principle)
+15.[应用结构](#application-structure)
+16.[模块化](#modularity)
+17.[启动](#startup-logic)
+18.[Angular $服务包装](#angular-wrapper-services)
+19.[测试](#testing)
+20.[动画](#animations)
+21.[评论](#comments)
+22.[JSHint](#js-hint)
+23.[JSCS](#jscs)
+24.[常量](#constants)
+25.[文件模板和代码片段](#file-templates-and-snippets)
+26.[路由](#routing)
+27.[自动化任务](#task-automation)
+28.[Filter过滤器](#filter)
+29.[Angular 文档](#angular-docs)
+</code></pre><h2 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h2><h3 id="规则1"><a href="#规则1" class="headerlink" title="规则1"></a>规则1</h3><h5 id="Style-Y001"><a href="#Style-Y001" class="headerlink" title="[Style Y001]"></a>[Style <a href="#style-y001">Y001</a>]</h5><pre><code>- 每个文件仅包含一个组件，并且使其少于400行代码，它的好处在于
+    1.对于测试来说更加容易
+    1.使得代码可读性更强，更好维护，避免团队在源代码控制方面的问题
+    1.可以避免 多个组件在共享变量，创建不必要的闭包，或者不必要的耦合和依赖 时隐藏的错误
+</code></pre><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*不规范示例*/</span></span><br><span class="line">angular</span><br><span class="line">	.module(<span class="string">'app'</span>,[<span class="string">'ngRoute'</span>])</span><br><span class="line">	.controller(<span class="string">'SomController'</span>,SomeController)</span><br><span class="line">	.factory(<span class="string">'SomeFactory'</span>,SomeFactory);</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">SomeController</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">SomeFactory</span>(<span class="params"></span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*推荐*/</span></span><br><span class="line"><span class="comment">//app.module.js</span></span><br><span class="line">angular</span><br><span class="line">	.module(<span class="string">'app'</span>,[<span class="string">'ngRoute'</span>]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*some.controller.js*/</span></span><br><span class="line">angular</span><br><span class="line">	.module(<span class="string">'app'</span>)</span><br><span class="line">	.controller(<span class="string">'SomeController'</span>,SomeController);</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">SomeController</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* recommended */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// some.factory.js</span></span><br><span class="line">angular</span><br><span class="line">		.module(<span class="string">'app'</span>)</span><br><span class="line">		.factory(<span class="string">'someFactory'</span>, someFactory);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someFactory</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong><a href="table-of-contents">返回顶部</a></strong></p>
+<h2 id="IIFE-立即执行方法-Immediately-Invoked-Function-Expression-IIFE"><a href="#IIFE-立即执行方法-Immediately-Invoked-Function-Expression-IIFE" class="headerlink" title="IIFE (立即执行方法 Immediately Invoked Function Expression(IIFE))."></a>IIFE (立即执行方法 Immediately Invoked Function Expression(IIFE)).</h2><h3 id="Javascript-Scopes"><a href="#Javascript-Scopes" class="headerlink" title="Javascript Scopes"></a>Javascript Scopes</h3><h6 id="Style-Y010"><a href="#Style-Y010" class="headerlink" title="[Style Y010]"></a>[Style <a href="#style-y010">Y010</a>]</h6><pre><code>- 将Angular组件包含在IIFE代码块中，这样的优势在于
+1.一个IIFE将变量从全局作用域中移出，这会有效的方式变量和方法之间的命名冲突
+1.当你将你的代码从开发板 压缩和打包 到生产服务器上的时候，会有很多全局作用域下的变量发生冲突，
+这时IIFE就可以有效的隔离这些变量
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 不规范 */</span></span><br><span class="line"><span class="comment">// logger.js</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .factory(<span class="string">'logger'</span>, logger);</span><br><span class="line"></span><br><span class="line"><span class="comment">// logger 方法已经添加到了全局作用域中</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logger</span>(<span class="params"></span>) </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// storage.js</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .factory(<span class="string">'storage'</span>, storage);</span><br><span class="line"></span><br><span class="line"><span class="comment">// storage 方法已经添加到了全局作用域中</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">storage</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+</code></pre>  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 推荐</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 下面代码中没有全局作用域变量和方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// logger.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    'use strict'</span>;</span><br><span class="line"></span><br><span class="line">    angular</span><br><span class="line">        .module(<span class="string">'app'</span>)</span><br><span class="line">        .factory(<span class="string">'logger'</span>, logger);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">logger</span>(<span class="params"></span>) </span>&#123; &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// storage.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    'use strict'</span>;</span><br><span class="line"></span><br><span class="line">    angular</span><br><span class="line">        .module(<span class="string">'app'</span>)</span><br><span class="line">        .factory(<span class="string">'storage'</span>, storage);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">storage</span>(<span class="params"></span>) </span>&#123; &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<pre><code>**[返回顶部](#table-of-contents)**
+</code></pre><h2 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h2><h3 id="避免命名冲突"><a href="#避免命名冲突" class="headerlink" title="避免命名冲突"></a>避免命名冲突</h3><h6 id="Style-Y020"><a href="#Style-Y020" class="headerlink" title="[Style Y020]"></a>[Style <a href="#style-y020">Y020</a>]</h6><pre><code>- 使用统一的子模块命名规则可以帮助避免模块命名冲突。分隔符帮助定义模块和他们的子模块之间的层次结构
+例如`app`可以作为父模块名，`app.dashboard`和`app.users`模块作为依赖于`app`模块的子模块。
+</code></pre><h3 id="定义-or-设置"><a href="#定义-or-设置" class="headerlink" title="定义(or 设置)"></a>定义(or 设置)</h3><h6 id="Style-Y021"><a href="#Style-Y021" class="headerlink" title="[Style Y021]"></a>[Style <a href="#style-y021">Y021</a>]</h6><pre><code>- 可以使用模块的setter语法定义模块，而不要使用变量定义模块。
+        在单一组件文件中，使用到模块变量的情况会变得非常少。
+        <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免使用 */</span></span><br><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'app'</span>, [</span><br><span class="line">    <span class="string">'ngAnimate'</span>,</span><br><span class="line">    <span class="string">'ngRoute'</span>,</span><br><span class="line">    <span class="string">'app.shared'</span>,</span><br><span class="line">    <span class="string">'app.dashboard'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+      <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐方式 */</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>, [</span><br><span class="line">        <span class="string">'ngAnimate'</span>,</span><br><span class="line">        <span class="string">'ngRoute'</span>,</span><br><span class="line">        <span class="string">'app.shared'</span>,</span><br><span class="line">        <span class="string">'app.dashboard'</span></span><br><span class="line">    ]);</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="Getters"><a href="#Getters" class="headerlink" title="Getters"></a>Getters</h3><h6 id="Style-Y022"><a href="#Style-Y022" class="headerlink" title="[Style Y022]"></a>[Style <a href="#style-y022">Y022</a>]</h6><pre><code>- 当使用一个模块的时候，可以使用getter链而非变量装载。
+    这样可以使项目代码的可读性更高并且避免变量冲突
+
+    <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免使用 */</span></span><br><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'app'</span>);</span><br><span class="line">app.controller(<span class="string">'SomeController'</span>, SomeController);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SomeController</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐使用 */</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .controller(<span class="string">'SomeController'</span>, SomeController);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SomeController</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="Getter-方法和Setter-方法之间的比较"><a href="#Getter-方法和Setter-方法之间的比较" class="headerlink" title="Getter 方法和Setter 方法之间的比较"></a>Getter 方法和Setter 方法之间的比较</h3><h6 id="Style-Y023"><a href="#Style-Y023" class="headerlink" title="[Style Y023]"></a>[Style <a href="#style-y023">Y023</a>]</h6><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* recommended */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个模块</span></span><br><span class="line">angular.module(<span class="string">'app'</span>, []);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从模块集合中取出这个模块</span></span><br><span class="line">angular.module(<span class="string">'app'</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="命名-与-匿名方法之间的比较"><a href="#命名-与-匿名方法之间的比较" class="headerlink" title="命名 与 匿名方法之间的比较"></a>命名 与 匿名方法之间的比较</h3><h6 id="Style-Y024"><a href="#Style-Y024" class="headerlink" title="[Style Y024]"></a>[Style <a href="#style-y024">Y024</a>]</h6><pre><code>- 在回调函数中尽量使用命名方法代替匿名方法，这样会使得代码的可读性更高，并且提升代码可复用的程度
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免使用 */</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .controller(<span class="string">'DashboardController'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; &#125;)</span><br><span class="line">    .factory(<span class="string">'logger'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; &#125;);</span><br></pre></td></tr></table></figure>
+</code></pre>  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐使用 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// dashboard.js</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .controller(<span class="string">'DashboardController'</span>, DashboardController);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DashboardController</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// logger.js</span></span><br><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .factory(<span class="string">'logger'</span>, logger);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logger</span>(<span class="params"></span>) </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong><a href="#table-of-contents">Back to top</a></strong></p>
+<h2 id="控制器Controllers"><a href="#控制器Controllers" class="headerlink" title="控制器Controllers"></a>控制器Controllers</h2><h3 id="controllerAs-View-Syntax"><a href="#controllerAs-View-Syntax" class="headerlink" title="controllerAs View Syntax"></a>controllerAs View Syntax</h3><h6 id="Style-Y030"><a href="#Style-Y030" class="headerlink" title="[Style Y030]"></a>[Style <a href="#style-y030">Y030</a>]</h6><pre><code>-使用[`controllerAs`](http://www.johnpapa.net/do-you-like-your-angular-controllers-with-or-without-sugar/) 语句替代`经典控制器$scope`语句
+    1.控制器构造、新建的时候回提供一个简单的实例，而`controllerAs`语句相比`传统$scope 语句`更接近Javascript原声方法
+    1.它会在视图中使用一个虚拟的对象绑定（例如 使用`customer.name` 代替 `name`）,更加贴近上下文关系，
+    增加刻度性，避免引用冲突问题
+    1.帮助避免在视图嵌套控制器中使用`$parent`
+
+    <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- avoid --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-controller</span>=<span class="string">"CustomerController"</span>&gt;</span></span><br><span class="line">    &#123;&#123; name &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- recommended --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-controller</span>=<span class="string">"CustomerController as customer"</span>&gt;</span></span><br><span class="line">    &#123;&#123; customer.name &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="controllerAs-控制器语句"><a href="#controllerAs-控制器语句" class="headerlink" title="controllerAs 控制器语句"></a>controllerAs 控制器语句</h3><h6 id="Style-Y031"><a href="#Style-Y031" class="headerlink" title="[Style Y031]"></a>[Style <a href="#style-y031">Y031</a>]</h6><pre><code>- 使用`controllerAs`语句替代`传统controller中的$scope`
+
+- `controllerAs`语句在Controller内部使用`this`将数据绑定在`$scope`上
+`controllerAs` 是`$scope`语法糖。你依然可以使用`$scope`方法.
+
+*Why?*:`controllerAs`语句是`$scope`基础上的一种语法糖，你可以继续使用`$scope`绑定变量和方法。
+
+*Why?*:帮助避免在控制器中使用`$scope`方法，用其他的方式实现或者将他们移动到工厂方法中，并在控制器中引用.控制器应仅在需要的时候使用`$scope`，再实例中，当我们使用[`$emit`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$emit), [`$broadcast`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$broadcast) 或者 [`$on`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$on). 一个变量或者声明一个事件
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免使用 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomerController</span>(<span class="params">$scope</span>)</span>&#123;</span><br><span class="line">	$scope.name = &#123;&#125;;</span><br><span class="line">	$scope.sendMessage = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 推荐 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomerController</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = &#123;&#125;;</span><br><span class="line">	<span class="keyword">this</span>.sendMessage = <span class="function"><span class="keyword">function</span> </span>&#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="controllerAs-和-VM"><a href="#controllerAs-和-VM" class="headerlink" title="controllerAs 和 VM"></a>controllerAs 和 VM</h3><h6 id="Style-Y032"><a href="#Style-Y032" class="headerlink" title="[Style Y032]"></a>[Style <a href="#style-y032">Y032</a>]</h6><pre><code>- 当使用`controllerAs`语法的时候，捕捉一个变量替代`this`，选择统一的变量名`vm`，代表 ViewModel。
+
+*Why?*：`this` 关键字是作为上下文对象，当使用控制器内部的方法有可能会改变它的作用域，捕捉上下文中的`this`避免遇到这种问题
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 错误的示例 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomerController</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = &#123;&#125;;</span><br><span class="line">		<span class="keyword">this</span>.sendMessage = &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 推荐的方式 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomerController</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">		vm.name = &#123;&#125;;</span><br><span class="line">		vm.sendMessage = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><p>注意:你通过在代码上添加注释避免任何的<a href="http://jshint.com/" target="_blank" rel="noopener">jshint</a>警告。但是，这不需要将方法使用大写命名，这只是个对于构造方法的惯例。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* jshint validthis : true */</span></span><br><span class="line"><span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br></pre></td></tr></table></figure>
+<p>注意:当在控制器中使用<code>controller as</code>创建一个监听时，你可以监听<code>vm.*</code><br>(创建监听的时候需要小心监听导致的更多的负载)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ng-model</span> = <span class="string">"vm.tite"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SomeController</span>(<span class="params">$scope,$log</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">		vm.title = <span class="string">'Some Title'</span>;</span><br><span class="line"></span><br><span class="line">		$scope.watch(<span class="string">'vm.title'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">				$log.info(<span class="string">'vm.title was %s'</span>,original);</span><br><span class="line">		&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意:当基于一个庞大的代码库工作时，使用更多的描述性命名可以帮助简化的认知负荷和搜素，避免坑长的名字和繁琐的输入。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 避免使用 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ng-model</span>=<span class="string">"customerProductItemVm.title"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 推荐 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ng-model</span>=<span class="string">"productVm.title"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="将绑定成员提取到首位"><a href="#将绑定成员提取到首位" class="headerlink" title="将绑定成员提取到首位"></a>将绑定成员提取到首位</h3><pre><code>- 将需要绑定的成员按照字母顺序放在控制器的上方，并且不要扩散到控制器代码
+
+*Why?*:将需要绑定的成员防止在首位可以提升代码的可读性，并且帮你快速识别这个控制器需要绑定的成员都有哪些
+
+*Why?*:设置匿名行内函数当然可以使得代码简单，但是当哪些方法体多余一行代码的时候，他们会很大程序上降低代码可读性。将方法定义在绑定成员的下方（哪些方法会被提升）将实现细节移动到下方，保持绑定成员在上方，使代码可读性更好。
+</code></pre><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SessionsController</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	vm.gotoSession = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	vm.refresh = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SessionsController</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	vm.gotoSession = gotoSession;</span><br><span class="line">	vm.refresh = refresh;</span><br><span class="line">	vm.search = search;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">gotoSession</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">refresh</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">search</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>![Controller Using &quot;Above the Fold&quot;](https://raw.githubusercontent.com/johnpapa/angular-styleguide/master/a1/assets/above-the-fold-1.png)
+</code></pre><p>注意：如果这个方法的代码只有一行可以将它保持在上方，这样并不影响可读性。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SessionController</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	vm.gotoSession = gotoSession;</span><br><span class="line"></span><br><span class="line">	vm.refresh = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">		 * lines</span></span><br><span class="line"><span class="comment">		 * of</span></span><br><span class="line"><span class="comment">		 * code</span></span><br><span class="line"><span class="comment">		 * affects</span></span><br><span class="line"><span class="comment">		 * readabibity</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">	&#125;</span><br><span class="line">	vm.search = search;</span><br><span class="line">	vm.sessions = [];</span><br><span class="line">	vm.title = <span class="string">'Sessions'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐方式 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SessionsController</span>(<span class="params">sessionDataService</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">		vm.gotoSession = gotoSession;</span><br><span class="line">		vm.refresh = sessionDataService.refresh; <span class="comment">// 1 liner is OK</span></span><br><span class="line">		vm.search = search;</span><br><span class="line">		vm.sessions = [];</span><br><span class="line">		vm.title = <span class="string">'Sessions'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过方法定义隐藏实现"><a href="#通过方法定义隐藏实现" class="headerlink" title="通过方法定义隐藏实现"></a>通过方法定义隐藏实现</h3><h6 id="Style-Y034"><a href="#Style-Y034" class="headerlink" title="[Style Y034]"></a>[Style <a href="#style-y034">Y034</a>]</h6><pre><code>- 使用方法定义隐藏方法实现细节。保持你的邦定成员在上方，当你需要在一个控制器中绑定一个方法的时候，它指向出现在这个文件中的一个函数声明。这是直接绑定部分成员，更多细节详见[这篇文章](http://www.johnpapa.net/angular-function-declarations-function-expressions-and-readable-code/)
+</code></pre><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 避免使用 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AvengersController</span>(<span class="params">avengersService,logger</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">		vm.avengers = [];</span><br><span class="line">		vm.title = <span class="string">'Avengers'</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> activate = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">				<span class="keyword">return</span> getAvengers().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">						logger.info(<span class="string">'Activated Avengers View'</span>);</span><br><span class="line">				&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> getAvengers = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">				<span class="keyword">return</span> avengersService.getAvengers().then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">						vm.avengers = data;</span><br><span class="line">						<span class="keyword">return</span> vm.avengers;</span><br><span class="line">				&#125;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		vm.getAvengers = getAvengers;</span><br><span class="line"></span><br><span class="line">		activate();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">注意:在上面的示例中重要的东西都很分散。下面的代码中，注意重要的东西都在上方</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`javascript</span></span><br><span class="line"><span class="string">/* 推荐</span></span><br><span class="line"><span class="string">使用方法定义，绑定成员定义在上方</span></span><br><span class="line"><span class="string">*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function AvengersController(avengerService,logger)&#123;</span></span><br><span class="line"><span class="string">		var vm = this;</span></span><br><span class="line"><span class="string">		vm.avengers = [];</span></span><br><span class="line"><span class="string">		vm.getAvengers = getAvengers;</span></span><br><span class="line"><span class="string">		vm.title = '';</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">		active();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">		function activate()&#123;</span></span><br><span class="line"><span class="string">				return getAvengers().then(function()&#123;</span></span><br><span class="line"><span class="string">						logger.info('Activated Avengers View');</span></span><br><span class="line"><span class="string">				&#125;)</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">		function geetAvengers()&#123;</span></span><br><span class="line"><span class="string">				return avengersService.getAvengers().then(function(data)&#123;</span></span><br><span class="line"><span class="string">						vm.avengers = data;</span></span><br><span class="line"><span class="string">						return vm.avengers;</span></span><br><span class="line"><span class="string">				&#125;);</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="将控制器移动到服务-Service-中"><a href="#将控制器移动到服务-Service-中" class="headerlink" title="将控制器移动到服务(Service)中"></a>将控制器移动到服务(Service)中</h3><h6 id="Style-Y035"><a href="#Style-Y035" class="headerlink" title="[Style Y035]"></a>[Style <a href="#style-y035">Y035</a>]</h6><pre><code>- 将控制器中的逻辑移动到服务器或者工厂方法中
+</code></pre><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* avoid */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">OrderController</span>(<span class="params">$http, $q, config, userInfo</span>) </span>&#123;</span><br><span class="line">	 <span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">	 vm.checkCredit = checkCredit;</span><br><span class="line">	 vm.isCreditOk;</span><br><span class="line">	 vm.total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	 <span class="function"><span class="keyword">function</span> <span class="title">checkCredit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			 <span class="keyword">var</span> settings = &#123;&#125;;</span><br><span class="line">			 <span class="comment">// Get the credit service base URL from config</span></span><br><span class="line">			 <span class="comment">// Set credit service required headers</span></span><br><span class="line">			 <span class="comment">// Prepare URL query string or data object with request data</span></span><br><span class="line">			 <span class="comment">// Add user-identifying info so service gets the right credit limit for this user.</span></span><br><span class="line">			 <span class="comment">// Use JSONP for this browser if it doesn't support CORS</span></span><br><span class="line">			 <span class="keyword">return</span> $http.get(settings)</span><br><span class="line">					 .then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">						<span class="comment">// Unpack JSON data in the response object</span></span><br><span class="line">							<span class="comment">// to find maxRemainingAmount</span></span><br><span class="line">							vm.isCreditOk = vm.total &lt;= maxRemainingAmount</span><br><span class="line">					 &#125;)</span><br><span class="line">					 .catch(<span class="function"><span class="keyword">function</span>(<span class="params">error</span>) </span>&#123;</span><br><span class="line">							<span class="comment">// Interpret error</span></span><br><span class="line">							<span class="comment">// Cope w/ timeout? retry? try alternate service?</span></span><br><span class="line">							<span class="comment">// Re-reject with appropriate error for a user to see</span></span><br><span class="line">					 &#125;);</span><br><span class="line">	 &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 推荐 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">OrderController</span>(<span class="params">creditService</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">		vm.checkCredit = checkCredit;</span><br><span class="line">		vm.isCreditOk;</span><br><span class="line">		vm.total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">function</span> <span class="title">checkCredit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">				<span class="keyword">return</span> creditService.isOrderTotalOk(vm.total)</span><br><span class="line">					.then(<span class="function"><span class="keyword">function</span>(<span class="params">isOk</span>)</span>&#123; vm.isCreditOk = ok; &#125;)</span><br><span class="line">					.catch(showError);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使控制器更专注"><a href="#使控制器更专注" class="headerlink" title="使控制器更专注"></a>使控制器更专注</h3><h6 id="Style-Y037"><a href="#Style-Y037" class="headerlink" title="[Style Y037]"></a>[Style <a href="#style-y037">Y037</a>]</h6><pre><code>- 为一个视图定义一个控制器，不要试图在其他视图中复用控制器，而是将可以复用的逻辑转移到工厂中，保持控制器的简单并专注与当前视图。
+
+*Why?*: 在很多的视图上复用控制器是脆弱的，端对端（end-to-end）测试需要保证访问一个复杂的应用时的稳定性
+</code></pre><h3 id="分配控制器"><a href="#分配控制器" class="headerlink" title="分配控制器"></a>分配控制器</h3><h6 id="Style-Y038"><a href="#Style-Y038" class="headerlink" title="[Style Y038]"></a>[Style <a href="#style-y038">Y038</a>]</h6><pre><code>- 当一个控制器必须搭配一个视图并且其他组件需要复用其他的控制器或视图，在它的路由中单独定义控制器。
+
+注意: 如果视图加载依赖其他视图，这意味着另外的一种途径，尝试使用`ng-controller=&quot;Avengers as vm&quot;` 语句.
+</code></pre>
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/06/27/AngularJS 1x Style Guide/"
+                    data-title="AngularJS 1x Style Guide"
+                    data-url="http://localhost/2016/06/27/AngularJS 1x Style Guide/"
+                    data-images="http://localhost/img/home-bg.jpg"
+                    data-content="Angular 1.x 编码规则Angular 团队支持&lt;非常感谢Angular团队领导... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="How use Markdown to write GitHub README">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="MQTT Agreement Basics">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/06/27/AngularJS 1x Style Guide/"
+                        data-title="AngularJS 1x Style Guide"
+                        data-url="http://localhost/2016/06/27/AngularJS 1x Style Guide/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        <a class="tag-link" href="/tags/Analysis/">Analysis</a><a class="tag-link" href="/tags/Angular/">Angular</a><a class="tag-link" href="/tags/Angular2/">Angular2</a><a class="tag-link" href="/tags/CSS/">CSS</a><a class="tag-link" href="/tags/ES6/">ES6</a><a class="tag-link" href="/tags/HTML布局/">HTML布局</a><a class="tag-link" href="/tags/Java/">Java</a><a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/Memcached/">Memcached</a><a class="tag-link" href="/tags/Nginx/">Nginx</a><a class="tag-link" href="/tags/Python/">Python</a><a class="tag-link" href="/tags/Redis/">Redis</a><a class="tag-link" href="/tags/Spider/">Spider</a><a class="tag-link" href="/tags/前端/">前端</a><a class="tag-link" href="/tags/前端开发/">前端开发</a><a class="tag-link" href="/tags/工具使用/">工具使用</a><a class="tag-link" href="/tags/推送/">推送</a><a class="tag-link" href="/tags/数据/">数据</a><a class="tag-link" href="/tags/爬虫/">爬虫</a><a class="tag-link" href="/tags/集群/">集群</a>
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

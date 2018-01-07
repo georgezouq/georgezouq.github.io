@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Less And Sass - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2016/06/27/Less And Sass/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        /*background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')*/
+        height: 500px;
+        overflow: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+<header class="intro-header" >
+    <iframe src="null"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/前端开发/" title="前端开发">前端开发</a>
+                            
+                              <a class="tag" href="/tags/CSS/" title="CSS">CSS</a>
+                            
+                        </div>
+
+                        <h1>Less And Sass</h1>
+                        <h2 class="subheading">Keynote: Less And Sass</h2>
+                        <span class="meta">
+                            Posted by George on
+                            2016-06-27
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </iframe>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Less与Sass解析"><a href="#Less与Sass解析" class="headerlink" title="Less与Sass解析"></a>Less与Sass解析</h1><p>  首先我们要明确一个观点，尽管Less和Sass语法上有一些共性，但是Less !== Sass。当我们构建一个网站的时候，<br>我们可能会需要调色板这个功能，即拥有提供固定的可选择样式，避免样式跳跃过大。这个时候我们就用到了Less和Sass，<br>事实证明，他们的功能要比这个多得多。</p>
+<h3 id="Less-和-Sass-语法共性"><a href="#Less-和-Sass-语法共性" class="headerlink" title="Less 和 Sass 语法共性"></a>Less 和 Sass 语法共性</h3><p>1.混入（Minxins）—— class中的class<br>2.参数混入 —— 可以传递参数的class<br>3.嵌套规则 —— Class中嵌套class，从而较少重复的代码<br>4.运算 —— CSS中用上数学<br>5.颜色功能 —— 可编辑颜色<br>6.命名空间（namespace） —— 分组样式<br>7.作用域 —— 局部修改样式<br>8.JavaScript赋值 - 在CSS中使用JavaScript表达式赋值</p>
+<p>Less和Sass的主要不同就是他们的实现方式，Less是基于JavaScript，所以是在客户端处理。而<br>Sass是基于Ruby在服务器端处理的。很多开发者不会选择Less因为JavaScript引擎需要额外的时<br>间来处理代码然后输出修改过的CSS到浏览器。关于这个有很多种方式，我选择的是只在开发环节使用<br>LESS，一旦我完成开发，就复制然后粘贴Less输出的到一个压缩器，然后到一个独立的CSS文件来替代<br>Less文件。另外，我选择使用LESS.app来编译和压缩Less文件。两个选择都将最小化你的样式输出，<br>从而避免由于用户的浏览器不支持JavaScript而可能引起的任何问题。</p>
+<h1 id="Less-Is-More"><a href="#Less-Is-More" class="headerlink" title="Less Is More"></a>Less Is More</h1><h2 id="Sass-安装"><a href="#Sass-安装" class="headerlink" title="Sass 安装"></a>Sass 安装</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>  如果已经安装好了Ruby，接着在命令行下输入</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gem install sass</span><br></pre></td></tr></table></figure>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>  将Sass文件(.sass)转化为<code>css</code>代码</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sass test.scss</span><br></pre></td></tr></table></figure>
+<p>  如果要将显示结果保存成未见，后面再跟一个<code>.css</code>文件名</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sass test.scss test.css</span><br></pre></td></tr></table></figure>
+<p>  Sass 提供四个编译风格选项：</p>
+<p>  1.nested : 嵌套缩进的css代码，他是默认值<br>  2.expanded : 没有缩进的、拓展css代码<br>  3.compact : 简洁格式的css代码<br>  4.compressed : 压缩后的css代码</p>
+<p>  在生产环境当中，一般使用最后一个选项</p>
+<p>  sass –style compressed test.sass test.css</p>
+<p>  也可以让sass监听某人文件或目录，一旦源文件有变化，就自动生成编译后的文件<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">  //watch a filter</span><br><span class="line">  sass --watch input.scss:output.css</span><br><span class="line"></span><br><span class="line">  //watch a directory</span><br><span class="line">  sass --watch app/sass:public/stylesheets</span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Less 安装</span></span></span><br><span class="line"></span><br><span class="line">在项目中引入less.js</span><br><span class="line"></span><br><span class="line">1.下载less.js</span><br><span class="line">2.创建一个文件来存放Less代码，如style.less</span><br><span class="line">3.添加以下代码到你的HTML的&lt;head&gt;中</span><br><span class="line"></span><br><span class="line">```HTML</span><br><span class="line">&lt;link rel="stylesheet/less" type="text/css" href="styles.less"&gt;</span><br><span class="line">&lt;script src="less.js" type="text/javascript"&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>其实也有一个<a href="http://lesscss.org/#-server-side-usage" target="_blank" rel="noopener">服务器端的less版本</a>，在服务器上安装Less的最简单的办法就是使用<a href="https://github.com/npm/npm" target="_blank" rel="noopener">Node Package</a>Messager (NPM 一看 就知道是基于NodeJS的)</p>
+<h2 id="相同和不同"><a href="#相同和不同" class="headerlink" title="相同和不同"></a>相同和不同</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><pre><code>If you are developer,variables will be your best friend
+</code></pre><p>我们可以将能重复使用到的值（本案例里是color）设置成变量，这样就可以避免重复的定义，减少很大的工作量</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@blue :</span> <span class="number">#00c</span>;</span><br><span class="line"><span class="variable">@light_blue :</span> <span class="variable">@blue</span> + <span class="number">#333</span>;</span><br><span class="line"><span class="variable">@dark_blue :</span> <span class="variable">@blue</span> - <span class="number">333</span>;</span><br></pre></td></tr></table></figure>
+<p>他们看起来：</p>
+<p>关于变量 Less和Sass的唯一区别就是 Less使用<code>@</code> 而 Sass 使用<code>$</code>.同时还有一些作用域上的差别，我们之后会提到</p>
+<h3 id="混入-mixin"><a href="#混入-mixin" class="headerlink" title="混入(mixin)"></a>混入(mixin)</h3><p>有些时候我们会创建一些在样式表中重复使用的样式规则，通常会使用<br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"border article"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这种方式引用多种样式，但是有了less 我们可以</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.border</span>&#123;</span><br><span class="line">  <span class="attribute">border-top </span>: <span class="number">1px</span> dotted <span class="number">#333</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">article</span><span class="selector-class">.post</span>&#123;</span><br><span class="line">  <span class="attribute">background</span>:<span class="number">#333</span>;</span><br><span class="line">  <span class="selector-class">.border</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span><span class="selector-class">.menu</span>&#123;</span><br><span class="line">  <span class="attribute">background</span>:<span class="number">#ccc</span>;</span><br><span class="line">  <span class="selector-class">.border</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是在两个元素中分别添加<code>.border</code> 同样的效果，而且仅仅在样式变中就完成了</p>
+<p>在Sass中，我们需要在样式规则前添加<code>@minxin</code>声明,然后通过<code>@include</code>来调用它</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@mixin border &#123;</span><br><span class="line">  border-top:1px dotted #333;</span><br><span class="line">&#125;</span><br><span class="line">article.post &#123;</span><br><span class="line">  background : #eee;</span><br><span class="line">  @include border;</span><br><span class="line">&#125;</span><br><span class="line">ui.menu &#123;</span><br><span class="line">  background:#ccc;</span><br><span class="line">  @include border;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="参数混入"><a href="#参数混入" class="headerlink" title="参数混入"></a>参数混入</h3><p>使用Less或Sass，我们可以使用函数处理Css中多余的工作。最好的例子就是我们正在经历的从Css2到css3的过渡过程中很多浏览器的私有前缀。Nettuts+有一篇Jeffrey Way写的<a href="http://code.tutsplus.com/tutorials/quick-tip-never-type-a-vendor-prefix-again--net-17589" target="_blank" rel="noopener">文章</a><br>内容是包含参数的文件，他们可以附带大多数浏览器私有前缀Css3属性</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.border-radius</span>( <span class="variable">@radius</span>:<span class="number">3px</span> )&#123;</span><br><span class="line">  <span class="attribute">-webkit-border-radius </span>: <span class="variable">@radius</span>;</span><br><span class="line">  <span class="attribute">-moz-border-radius </span>: <span class="variable">@radius</span>;</span><br><span class="line">  <span class="attribute">border-radius </span>: <span class="variable">@radius</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Sess的语法很像Less，只是只用$声明变量，然后使用前面提到的<code>@minxin</code> 和 <code>@include</code>来调用</p>
+<h3 id="选择器继承"><a href="#选择器继承" class="headerlink" title="选择器继承"></a>选择器继承</h3><p>  Less并没有提供这个功能，通过这个功能，你可以讲一个选择器附加到已经预先定义的选择器上，而无需在使用逗号<br>  将两者分开:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.menu &#123;</span><br><span class="line">  border:1px solid #ddd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.footer &#123;</span><br><span class="line">  @extend .menu;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* 上面的写法等同于 */</span><br><span class="line">.menu,.footer &#123;</span><br><span class="line">  border:1px solid #ddd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="嵌套规则"><a href="#嵌套规则" class="headerlink" title="嵌套规则"></a>嵌套规则</h3><p>在Css中嵌套Class和ID是避免你的样式干扰或者被别的样式干扰的唯一方法，但这样会非常凌乱。使用一个类似于<code>#site-body.post.postheader h2</code>的选择器毫无吸引力，使用Less，你可以嵌套Id、class及标签:</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#site-body</span>&#123;</span><br><span class="line">  <span class="selector-class">.post</span> &#123;</span><br><span class="line">    <span class="selector-class">.post-header</span> &#123;</span><br><span class="line">      <span class="selector-tag">h2</span> &#123;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="selector-tag">&amp;</span><span class="selector-tag">amp</span>;<span class="selector-pseudo">:visited</span> &#123; ... &#125;</span><br><span class="line">        <span class="selector-tag">&amp;</span><span class="selector-tag">amp</span>;<span class="selector-pseudo">:hover</span> &#123; ... &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码最终和上面的例子（长长的选择器）的效果一样，但是更容易阅读和理解</p>
+<h3 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h3><p>在css中使用数字或变量来实现数学之美</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@base_margin:</span> <span class="number">10px</span>;</span><br><span class="line"><span class="variable">@double_margin:</span> <span class="variable">@base_margin</span> * <span class="number">2</span>;</span><br><span class="line"><span class="variable">@full_page:</span> <span class="number">960px</span>;</span><br><span class="line"><span class="variable">@half_page:</span> <span class="variable">@full_page</span> / <span class="number">2</span>;</span><br><span class="line"><span class="variable">@quarter_page:</span> (<span class="variable">@full_page</span> / <span class="number">2</span>) / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>Sass 在对数字的处理上更加专业，让已经可以换算单位了，Sass可以处理无法识别的度量单位并将其输出，这个特性明显是一个对未来的尝试 —— 证明W3C做出的一些改变</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/* Sass */</span><br><span class="line">2in + 3cm + 2pc = 3.514in</span><br><span class="line"></span><br><span class="line">/* Less */</span><br><span class="line">2in + 3cm + 2pc = ERROR!</span><br></pre></td></tr></table></figure>
+<h3 id="Color-函数"><a href="#Color-函数" class="headerlink" title="Color 函数"></a>Color 函数</h3><p>在文章开头的时候我们提到了调色板，对此贡献最大的一部分就是颜色函数。加入你用一个标准的蓝色贯穿到你的样式中，然后你想在表单中用这个蓝色来做一个渐变的按钮。你可以打开PS或者其他编辑器来获取一个比蓝色浅的或者比较暗的HFX色值来作为渐变色，或者，你可以使用Less中的颜色函数</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@blue:</span> <span class="number">#369</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.submit</span> &#123;</span><br><span class="line">  <span class="attribute">padding</span>:<span class="number">5px</span> <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">@blue</span>;</span><br><span class="line">  <span class="attribute">background</span>: -moz-linear-gradient(top, lighten(<span class="variable">@blue</span>, <span class="number">10%</span>), <span class="variable">@blue</span> <span class="number">100%</span>); <span class="comment">/*Moz*/</span></span><br><span class="line">	<span class="attribute">background</span>: -webkit-gradient(linear, center top, center bottom, from(lighten(<span class="variable">@blue</span>, <span class="number">10%</span>)), color-stop(<span class="number">100%</span>, <span class="variable">@blue</span>)); <span class="comment">/*Webkit*/</span></span><br><span class="line">	<span class="attribute">background</span>: -o-linear-gradient(top, lighten(<span class="variable">@blue</span>, <span class="number">10%</span>) <span class="number">0%</span>, <span class="variable">@blue</span> <span class="number">100%</span>); <span class="comment">/*Opera*/</span></span><br><span class="line">	<span class="attribute">background</span>: -ms-linear-gradient(top, lighten(<span class="variable">@blue</span>, <span class="number">10%</span>) <span class="number">0%</span>, <span class="variable">@blue</span> <span class="number">100%</span>); <span class="comment">/*IE 10+*/</span></span><br><span class="line">	<span class="attribute">background</span>: linear-gradient(top, lighten(<span class="variable">@blue</span>, <span class="number">10%</span>) <span class="number">0%</span>, <span class="variable">@blue</span> <span class="number">100%</span>); <span class="comment">/*W3C*/</span></span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">text-shadow</span>: <span class="number">0</span> -<span class="number">1px</span> <span class="number">1px</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>lighten函数明显就是用百分比值来减轻颜色，在这个例子中，他将减轻这个基础的蓝色的10%。这种方法可以让我们变阿华的元素或者其他任何元素的颜色值 —— 只是简单的改变基础颜色而已，这对于主题（模板）来说非常有用。而且，如果你使用参数功能，像上面提到的，你还可以更简单的应用到一些浏览器的私有前缀的生命中，如：<br><figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.linear-gradient</span>(lighten(<span class="variable">@blue</span>),<span class="variable">@blue</span>,<span class="number">100%</span>)</span><br></pre></td></tr></table></figure></p>
+<p>最终效果的确很赞</p>
+<p>Sass 貌似与更多的选项，如果你想了解更多，可以看一些<a href="http://nex-3.com/posts/89-powerful-color-manipulation-with-Sass" target="_blank" rel="noopener">这篇很详细的介绍</a></p>
+<h3 id="条件语句与控制"><a href="#条件语句与控制" class="headerlink" title="条件语句与控制"></a>条件语句与控制</h3><p>这的确是一个很好用的功能，也是另一个Less不支持的功能，你可以使用if {} else {} 条件语句，for {} 循环。他甚至支持and、or和not，以及&lt; , &gt; , &gt;= , &lt;= 和 == 等操作符</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">/* Sample Sass &quot;if&quot; statement */</span><br><span class="line">@if lightness($color) &amp;gt; 30% &#123;</span><br><span class="line">    backgroung-color: #000;</span><br><span class="line">&#125; @else &#123;</span><br><span class="line">    background-color: #fff;</span><br><span class="line">&#125;</span><br><span class="line">/* Sample Sass &quot;for&quot; loop */</span><br><span class="line">@for $i from 1px to 10px &#123;</span><br><span class="line">    .border-#&#123;i&#125; &#123;</span><br><span class="line">        border: $i solid blue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h3><p>命名空间可以有效的组织我们的Css，我们可以将一些公用的样式分组，然后在用的时候直接使用。例如，我们创建了一个名为default的样式分组，那我们就可以在用到的时候直接从该组中调用。</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.nav_list</span>() &#123;</span><br><span class="line">  <span class="attribute">list-style </span>: none;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.button</span>()&#123; ... &#125;</span><br><span class="line"><span class="selector-class">.quote</span>()&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>然后，在我们的代码中，如果我们正好在一个nav元素中使用了ul元素，那么我们就会想到我们需要default的样式，然后我们就可以简单的调用它，他就会被直接使用</p>
+<p>nav ul {</p>
+<p>  #defaults &gt; .nav_list;<br>}</p>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>作用域是编程中的标配，LESS中也是。如果你在你的样式表的root级声明一个变量，他在整个文档中都是可以使用的。然而，如果你在一个选择器，比如ID或者CLASS中，重新定义了这个变量，那么，他就只能在这个选择器中可用了。</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@color:</span> <span class="number">#00c</span>; <span class="comment">/* 蓝色 */</span></span><br><span class="line"><span class="selector-id">#header</span> &#123;</span><br><span class="line">  <span class="variable">@color:</span> <span class="number">#c00</span>; <span class="comment">/* 红色 */</span></span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="variable">@color</span>; <span class="comment">/* 红色边框 */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#footer</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="variable">@color</span>; <span class="comment">/* 蓝色边框 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>这一部分比较基础，Less允许两种注释的写法<code>//注释</code>和 <code>/* 注释 */</code></p>
+<h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>标准的<code>@import: &#39;classes.less&#39;</code> 如果你想要引入其他的LESS文件，那么文件的拓展名是可选的，所以@import ‘classes’ ;也是可行的。如果你想要导入一些无需less处理的内容，你可以使用.css后缀</p>
+<h3 id="字符串插入"><a href="#字符串插入" class="headerlink" title="字符串插入"></a>字符串插入</h3><p>字符串也是可以用于变量中的，然后通过 <code>@{name}</code> 来调用</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@base_url:</span> <span class="string">'http://www.ddd.com'</span></span><br><span class="line"><span class="attribute">background-image</span>: url(<span class="string">"@&#123;base_url&#125;/images/background.png"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="转义-Escaping"><a href="#转义-Escaping" class="headerlink" title="转义(Escaping)"></a>转义(Escaping)</h3><p>我们通常需要引入一个css中非法或者less无法识别的值，通常一些IE的hack，要避免抛出异常并破坏Less，你需要避开他们</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.class</span>&#123;</span><br><span class="line">  <span class="attribute">filter</span>: <span class="string">~"progid:DXImageTransform.Microsoft.Alpha(opacity=20)"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 实际上将会输出下面的代码 */</span></span><br><span class="line"><span class="selector-class">.class</span> &#123;</span><br><span class="line">  <span class="attribute">filter</span>:<span class="attribute">progid</span>:DXImageTransform.Microft.Alpha(opacity=<span class="number">20</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Javascript-赋值"><a href="#Javascript-赋值" class="headerlink" title="Javascript 赋值"></a>Javascript 赋值</h3><p>在样式表中使用Javascript：</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@string:</span> <span class="built_in">`'howdy'.toUpperCase()`</span>; <span class="comment">/* @string 变成 HOWDY */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 你也可以使用前面提到的值 */</span></span><br><span class="line"><span class="variable">@string:</span> <span class="string">'howdy'</span>;</span><br><span class="line"><span class="variable">@var:</span> <span class="built_in">~`'@&#123;string&#125;'.toUpperCase()`</span>; <span class="comment">/* 变为 HOWDY */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 获取文档的信息 */</span></span><br><span class="line"><span class="variable">@heigh</span> = <span class="built_in">`document.body.clientHeight`</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><p>然而Less并没有输出设置，而Sass中提供四种选项：nested，compact，compressed 和 expanded</p>
+<p><a href="http://blog.jobbole.com/24671/" target="_blank" rel="noopener">http://blog.jobbole.com/24671/</a></p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/06/27/Less And Sass/"
+                    data-title="Less And Sass"
+                    data-url="http://localhost/2016/06/27/Less And Sass/"
+                    data-images="http://localhost/post-bg-js-version.jpg"
+                    data-content="Less与Sass解析  首先我们要明确一个观点，尽管Less和Sass语法上有一些共性，但是... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="基于Tomcat + Nginx + Memcached 搭建集群HA架构">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/" data-toggle="tooltip" data-placement="top" title="ES6 Getting Start - Commend">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/06/27/Less And Sass/"
+                        data-title="Less And Sass"
+                        data-url="http://localhost/2016/06/27/Less And Sass/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        <a class="tag-link" href="/tags/Analysis/">Analysis</a><a class="tag-link" href="/tags/Angular/">Angular</a><a class="tag-link" href="/tags/Angular2/">Angular2</a><a class="tag-link" href="/tags/CSS/">CSS</a><a class="tag-link" href="/tags/ES6/">ES6</a><a class="tag-link" href="/tags/HTML布局/">HTML布局</a><a class="tag-link" href="/tags/Java/">Java</a><a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/Memcached/">Memcached</a><a class="tag-link" href="/tags/Nginx/">Nginx</a><a class="tag-link" href="/tags/Python/">Python</a><a class="tag-link" href="/tags/Redis/">Redis</a><a class="tag-link" href="/tags/Spider/">Spider</a><a class="tag-link" href="/tags/前端/">前端</a><a class="tag-link" href="/tags/前端开发/">前端开发</a><a class="tag-link" href="/tags/工具使用/">工具使用</a><a class="tag-link" href="/tags/推送/">推送</a><a class="tag-link" href="/tags/数据/">数据</a><a class="tag-link" href="/tags/爬虫/">爬虫</a><a class="tag-link" href="/tags/集群/">集群</a>
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
