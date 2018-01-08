@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          NOTE for Task, Microtask Queues and Schedules - George 的博客 | George &#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost/2018/01/09/NOTE-Task-Microtask-Queues-and-Schedules/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">George &#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>NOTE for Task, Microtask Queues and Schedules</h1>
+                    <h2 class="subheading">undefined</h2>
+                    <span class="meta">
+                        Posted by George on
+                        2018-01-09
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="NOTE-for-Tasks-microtasks-queues-and-schedules"><a href="#NOTE-for-Tasks-microtasks-queues-and-schedules" class="headerlink" title="NOTE for: Tasks, microtasks, queues and schedules"></a>NOTE for: Tasks, microtasks, queues and schedules</h1><p>This is the note for <a href="https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/" target="_blank" rel="noopener">This Article</a> And Thanks for Author</p>
+<p>First let’s take a look with the code:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise 1'</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise 2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br></pre></td></tr></table></figure>
+<p>and result:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">script start</span><br><span class="line">script end</span><br><span class="line">promise1</span><br><span class="line">promise2</span><br><span class="line">setTimeout</span><br></pre></td></tr></table></figure>
+<p>Microsoft Edge, Firefox 40, iOS Safari and desktop Safari 8.0.8 log <code>setTimeout</code> before <code>promise1</code> and <code>promise2</code> - although it appears to be a race condition. This is weird, as firefox 39 and Safari 8.0.7 get it consistently right.</p>
+<h2 id="Why-this-happens"><a href="#Why-this-happens" class="headerlink" title="Why this happens"></a>Why this happens</h2><p>This is something about <code>event loop handles tasks and microtasks</code>.</p>
+<p>Each <code>thread</code> gets its own event loop, so such web worker gets its own, so it can execute independently communicate. The event loop runs continually, evecuting any tasks queued. An event loop has multiple task sources which guaratees evecution order within that source, but the browser gets to pick which source to take a task from on each turn  of the loop. This allows the browser to give preference to performance sensitive task such as user-input.</p>
+<p><strong>Tasks</strong>: scheduled so the browser can get from its internals into JavaScript/DOM land and ensures these actions happen sequentially. Between tasks, the browser may render updates. Getting from a mouse click to an event callback requires scheduling a task, as does parsing HTML, and <code>setTimeout</code></p>
+<p><code>setTimeout</code> waits for a given delay then schedules a new task for its callback. This is why <code>setTimeout</code> is logged after <code>script end</code>, as logging <code>script end</code> is part of the first task, and <code>setTimeout</code> is logged in a separate task.</p>
+<p><strong>Microtasks</strong>: usually scheduled for things that should happen straight after the currently executing script, such as reacting to a batch of actions, or to make something async without taking the penalty of a whole new task. The microtask queue is processed after callbacks as long as <strong>no other JavaScript is mid-execution</strong>, and at the end of each task. Any additional microtasks queued during microtasks are added to the end of the queue and also processed. Include mutation abserver callbacks, and promise callbacks.</p>
+<p>Promise settles(settled) -&gt; queues a microtask for its reactionary callbacks. (ensures promise callbacks are async even if the promise has already settled).</p>
+<p>So calling <code>.then()</code> against a settled promise immediately queues a microtask. This is why <code>promise1</code> and <code>promise2</code> are logged after <code>script end</code>, as the currently running script must finish before microtasks are handled. <code>promise1</code> and <code>promise2</code> are logged before <code>setTiemout</code>, as microtasks always happen before the next task.</p>
+<p><strong>Summary</strong></p>
+<ul>
+<li>Tasks: Scheduled so the browser can get from its internals into JavaScript JavaScript/DOM land and ensures theses actions happen sequentially. Between tasks, browser may render updates, Geting from a mouse to an event callback requires scheduling a task, as does parsing HTML, and setTimeout</li>
+<li>Microtasks: Scheduled for things taht should happen straight after the currently executing script.</li>
+<li>JS stack: JS execute stack.</li>
+</ul>
+<h2 id="What-are-some-browsers-doing-differently"><a href="#What-are-some-browsers-doing-differently" class="headerlink" title="What are some browsers doing differently?"></a>What are some browsers doing differently?</h2><p>Some browsers log <code>script start</code>, <code>script end</code>, <code>setTimeout</code>, <code>promise1</code>, <code>promise2</code>. They’re running promise callbacks after <code>setTimeout</code>. It’s likely that they calling promise callbacks as <strong>part of a new task rather than as a microtask</strong>.</p>
+<p>It’s work because promises come from ECMAScript rather tan HTML. ECMAScript has the concept of “jobs” which are similar to microtasks, but the relationship isn’t explicit aside from <a href="https://esdiscuss.org/topic/the-initialization-steps-for-web-browsers#content-16" target="_blank" rel="noopener">vague mailing list discusions</a>.</p>
+<p>Treating promises as task leads to performance problems, as callbacks may be unnecessarily delayed by task-related things such as rendering.  It also causes non-determinism due to interaction with other task sources, and can break interactions with other APIs.</p>
+<h2 id="How-to-tell-if-something-uses-tasks-or-microtasks"><a href="#How-to-tell-if-something-uses-tasks-or-microtasks" class="headerlink" title="How to tell if something uses tasks or microtasks."></a>How to tell if something uses tasks or microtasks.</h2><p>Testing see when logs appear relative to promises &amp; setTimeout, although you’re relying on the implementation to be correct.</p>
+<p>The certain way, is to loop up the spec:</p>
+<ul>
+<li><a href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timer-initialisation-steps" target="_blank" rel="noopener">Step 14 of settimeout queues a task</a></li>
+<li><a href="https://dom.spec.whatwg.org/#queue-a-mutation-record" target="_blank" rel="noopener">Step 5 of queuing a mutation record queues a microtask</a></li>
+</ul>
+<p>In ECMAScript land, they call microtasks <code>jobs</code>. In <a href="http://www.ecma-international.org/ecma-262/6.0/#sec-performpromisethen" target="_blank" rel="noopener">step 8.a of PerformPromiseThen</a>, EnqueueJob is called to queue a microtask.</p>
+<h2 id="Level-1-bossfight"><a href="#Level-1-bossfight" class="headerlink" title="Level 1 bossfight"></a>Level 1 bossfight</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"outer"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Given the following JS, what will be logged if I click <code>div.innter</code>?</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Let's get hold of those elements</span></span><br><span class="line"><span class="keyword">var</span> outer = <span class="built_in">document</span>.querySelector(<span class="string">'.outer'</span>)</span><br><span class="line"><span class="keyword">var</span> innter = <span class="built_in">document</span>.querySelector(<span class="string">'.inner'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Let's listen for attribute changes on the outer element</span></span><br><span class="line"><span class="keyword">new</span> MutationObserver(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mutate'</span>)</span><br><span class="line">&#125;).observe(outer, &#123;</span><br><span class="line">    attributes: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Here's a click listener...</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>)</span><br><span class="line"></span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'timeout'</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'promise'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    outer.setAttribute(<span class="string">'data-random'</span>, <span class="built_in">Math</span>.random())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...which we'll attach to both elements</span></span><br><span class="line">inner.addEventListener(<span class="string">'click'</span>, onClick)</span><br><span class="line">outer.addEventListener(<span class="string">'click'</span>, onClick)</span><br></pre></td></tr></table></figure>
+<p>Result is different in different browser</p>
+<p><img src="01.png" alt="Pic"></p>
+<h2 id="Who’s-right"><a href="#Who’s-right" class="headerlink" title="Who’s right?"></a>Who’s right?</h2><p>Dispatching the <code>click</code> event is a task. Mutation observer and promise callbacks are queued as microtasks. The <code>setTimeout</code> callback is queued as a task.</p>
+<p>First task:</p>
+<ul>
+<li><code>Dispatch click</code> task</li>
+<li>Log <code>click</code></li>
+<li>Add task <code>setTimeout callback</code></li>
+<li>Then <code>Promise then</code> will be declare in Microtasks.</li>
+<li><code>Mutation queues</code> a microtask to handle observers</li>
+<li><code>onClick</code> event finish in JS stack</li>
+</ul>
+<p>It’s time to execute microtasks</p>
+<ul>
+<li>First <code>Promise then callback</code> will be execute</li>
+<li>Log <code>promise</code></li>
+<li>Then <code>Mutation callback</code> execute</li>
+<li>Log <code>mutate</code></li>
+</ul>
+<p>Because event bubbles, so our callback is called again for the outer element</p>
+<ul>
+<li>Log <code>click</code></li>
+<li>Add task <code>setTimeout callback</code></li>
+<li>Add microtask <code>Promise then</code></li>
+<li>Add microtask <code>Mutation callback</code></li>
+<li>Microtask <code>Promise then</code> will be execute</li>
+<li>Log <code>promise</code></li>
+<li>Microtask <code>Mutation observers</code> will be execute</li>
+<li>Log <code>mutate</code></li>
+<li>Then tasks <code>Dispatch click</code> clear, Move to <code>setTimeout callback</code> task</li>
+<li>Log <code>setTimeout</code></li>
+<li>Move to next <code>setTimeout callback</code> task</li>
+<li>Log <code>setTimeout</code></li>
+</ul>
+<p>This is the right way in Chrome. That microtasks are processed after callbacks (as long as no other JavaScript is mid-execution), It may was limited to end-of-task. This rule:</p>
+<pre><code>If the [stack of script settings objects](https://html.spec.whatwg.org/multipage/webappapis.html#stack-of-script-settings-objects) is now empty, [perform a microtask checkpoint](https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint)
+
+    - [HTML: CLeaning up after a callback](https://html.spec.whatwg.org/multipage/webappapis.html#clean-up-after-running-a-callback) step 3
+</code></pre><p>A microtask checkpoint involves going through the microtask queue, unless we;re already processing the microtask queue. Similarly, ECMAScript says this of jobs:</p>
+<pre><code>Execution of a Job can be initiated only when there is no running execution context and the execution context stack is empty...
+
+- ECMAScript: Jobs and Job Queues
+</code></pre><h2 id="What-did-browsers-get-wrong"><a href="#What-did-browsers-get-wrong" class="headerlink" title="What did browsers get wrong?"></a>What did browsers get wrong?</h2><p>Firefox and Safari are correctly exhausting the microtask queue between click listeners. as shown by the mutation callbacks, but promises appear to be queued differently. This is sort-of excusable given that the link between jobs &amp; microtasks is vague, but I’d still expect them to execute between listener callbacks.</p>
+<p>With Edge we’ve already seen it queue promises incorrectly, but it also fails to exhaust the microtask queue between click listeners, instead it does so after calling all listeners, which accounts for the single <code>mutate</code> lig after both <code>click</code> logs.</p>
+<h2 id="Level1-boss’s-angry-older-brother"><a href="#Level1-boss’s-angry-older-brother" class="headerlink" title="Level1 boss’s angry older brother"></a>Level1 boss’s angry older brother</h2><p>Same example from above, If we execute:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">inner.click()</span><br></pre></td></tr></table></figure>
+<p><img src="02.png" alt="Pic"></p>
+<h3 id="Why-is-it-different"><a href="#Why-is-it-different" class="headerlink" title="Why is it different?"></a>Why is it different?</h3><ul>
+<li>Run script</li>
+<li>inner.click() will be executed and JS stack boot into <code>onClick</code></li>
+<li>Log <code>click</code></li>
+<li><code>setTimeout</code> task been declared</li>
+<li>Microtasks <code>Promise then</code> has been created</li>
+<li>And add Microtasks <code>Mutation abservers</code></li>
+</ul>
+<p>After this, we cannot process microtasks, because JS stack is not empty</p>
+<ul>
+<li>Log <code>click</code></li>
+<li><code>setTimeout</code> task been declared</li>
+<li>Microtasks <code>Promise then</code> has been created</li>
+</ul>
+<p>And at this time, we cannot add another mutation microtask as one is already pending.</p>
+<p><code>Script</code> is gone, we process microtasks</p>
+<ul>
+<li>Microtasks <code>Promise then</code> executed and log <code>Promise</code></li>
+<li>Microtasks <code>Mutation observers</code> executed and log <code>Mutate</code></li>
+<li>Microtasks <code>Promise then</code> executed and log <code>Promise</code></li>
+</ul>
+<p>Run script task is finished, move to execute two <code>setTimeout callback</code> task</p>
+<ul>
+<li>Task <code>setTimeout callback</code> and log <code>timeout</code></li>
+<li>Task <code>setTimeout callback</code> and log <code>timeout</code></li>
+</ul>
+<p>Previously, this meant that microtasks run between listener callbacks, but <code>.click()</code> causes the eent to dispatch synchronously, so the script that calls <code>.click()</code> is still in the stack between callbacks. The above rule ensures microtasks don’t interrupt JavaScript that’s mid-execution.</p>
+<p>This means we don’t process the microtask queue between listener callbacks, they’re processed after both listeners.</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><ul>
+<li>Task execute in order, and the browser may render between them</li>
+<li>Microtasks execute in order, and are executed:<ul>
+<li>After every callback, as long as no other JavaScript is mid-execute</li>
+<li>At the end of each task</li>
+</ul>
+</li>
+</ul>
+<h3 id="Other-Funny-Thing"><a href="#Other-Funny-Thing" class="headerlink" title="Other Funny Thing"></a>Other Funny Thing</h3><ul>
+<li><a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank" rel="noopener">Great talk at JSConf on the event loop</a></li>
+<li><a href="http://w3c.github.io/IndexedDB/#database-access-task-source" target="_blank" rel="noopener">IndexedDB</a></li>
+<li><a href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timer-initialisation-steps" target="_blank" rel="noopener">Living Standard</a></li>
+<li><a href="http://www.ecma-international.org/ecma-262/6.0/#sec-performpromisethen" target="_blank" rel="noopener">ECMAScript® 2015 Language Specification</a></li>
+</ul>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2018/01/09/NOTE-Task-Microtask-Queues-and-Schedules/"
+                    data-title="NOTE for Task, Microtask Queues and Schedules"
+                    data-url="http://localhost/2018/01/09/NOTE-Task-Microtask-Queues-and-Schedules/"
+                    data-images=""
+                    data-content="NOTE for: Tasks, microtasks, queues and schedul... | George 的博客 | George &#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/07/13/CAP-Consistency-Availability-Partition-Tolerance-理论学习/" data-toggle="tooltip" data-placement="top" title="CAP(Consistency,Availability,Partition Tolerance)理论学习">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2018/01/09/NOTE-Task-Microtask-Queues-and-Schedules/"
+                        data-title="NOTE for Task, Microtask Queues and Schedules"
+                        data-url="http://localhost/2018/01/09/NOTE-Task-Microtask-Queues-and-Schedules/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                        <li><a href="#">Example Friends</a></li>
+                    
+                        <li><a href="#">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'georgezou';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/GeorgeZouSQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/george-zou">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/George-邹">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/georgezouq">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/GeorgeZouQ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; George &#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://localhost/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
